@@ -1,11 +1,12 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "main-capability",
-  "description": "Capabilities for the main window: shell sidecar + event emit.",
+  "description": "Capabilities for the main window: shell sidecar, event emit, notifications.",
   "windows": ["main"],
   "permissions": [
     "core:default",
     "core:event:default",
+    "notification:default",
     "shell:allow-spawn",
     {
       "identifier": "shell:allow-execute",
