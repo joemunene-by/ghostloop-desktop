@@ -155,9 +155,7 @@ pub fn rumble_pulse(req: RumbleRequest) -> Result<(), String> {
 
     let mut target_id: Option<GamepadId> = None;
     for (id, gp) in gilrs.gamepads() {
-        if gp.is_connected()
-            && (req.pad_id.is_none() || req.pad_id == Some(usize::from(id)))
-        {
+        if gp.is_connected() && (req.pad_id.is_none() || req.pad_id == Some(usize::from(id))) {
             target_id = Some(id);
             break;
         }
