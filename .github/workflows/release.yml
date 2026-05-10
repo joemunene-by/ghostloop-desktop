@@ -69,7 +69,7 @@ jobs:
       - name: Build the UI
         working-directory: ghostloop-ui
         run: |
-          npm ci
+          npm install
           npm run build
 
       - name: Install desktop deps
