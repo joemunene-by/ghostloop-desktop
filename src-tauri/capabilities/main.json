@@ -1,0 +1,25 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "main-capability",
+  "description": "Capabilities for the main window: shell sidecar + event emit.",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "core:event:default",
+    "shell:allow-spawn",
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
+        {
+          "name": "ghostloop-server",
+          "sidecar": true,
+          "args": true
+        },
+        {
+          "name": "python3",
+          "args": ["-m", "ghostloop.mcp_server"]
+        }
+      ]
+    }
+  ]
+}
