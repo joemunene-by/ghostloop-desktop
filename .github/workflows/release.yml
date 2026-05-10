@@ -74,7 +74,7 @@ jobs:
 
       - name: Install desktop deps
         working-directory: ghostloop-desktop
-        run: npm ci
+        run: npm install
 
       - name: Tauri build
         uses: tauri-apps/tauri-action@v0
