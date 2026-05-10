@@ -23,10 +23,7 @@ pub struct AlarmNotification {
 }
 
 #[tauri::command]
-pub async fn notify_alarm(
-    app: tauri::AppHandle,
-    notif: AlarmNotification,
-) -> Result<(), String> {
+pub async fn notify_alarm(app: tauri::AppHandle, notif: AlarmNotification) -> Result<(), String> {
     let notifier = app.notification();
 
     match notifier.permission_state() {
