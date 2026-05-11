@@ -1,14 +1,24 @@
 name: Release
 
-# Tag-push only. Builds the desktop bundles on each OS and uploads
-# them as a GitHub release. The ghostloop-ui frontend repo is cloned
-# alongside this checkout because tauri.conf.json points at
-# ../ghostloop-ui/.next/static. Tag format: v0.2.0.
+# MANUAL TRIGGER ONLY. The Tauri bundle pipeline has two known issues
+# that need an architectural fix before it produces working artefacts:
+#
+#   1. tauri.conf.json beforeBuildCommand backgrounds `npm run start`
+#      with `&`, which never exits. tauri-action waits on the shell
+#      and hangs indefinitely (jobs ran 70+ min before being killed).
+#
+#   2. frontendDist points at .next/static (JS chunks only). For a
+#      self-contained desktop bundle the UI needs `output: 'export'`
+#      in next.config.ts and frontendDist pointed at the resulting
+#      out/ directory. The /api/backend/[...path] proxy can't run in
+#      static-export mode, so the desktop variant has to talk to the
+#      sidecar Python runtime on localhost:8000 directly.
+#
+# Tag pushes used to trigger this workflow automatically; auto-trigger
+# is disabled until the above is sorted (tracked for v0.2.1 / v0.3).
+# Use workflow_dispatch from the Actions tab once the conf is fixed.
 
 on:
-  push:
-    tags:
-      - "v*"
   workflow_dispatch:
 
 permissions:
@@ -16,6 +26,7 @@ permissions:
 
 jobs:
   build:
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:

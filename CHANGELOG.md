@@ -28,10 +28,18 @@ All notable changes to ghostloop-desktop. Versioning follows SemVer.
 - GitHub Actions `ci.yml`: `cargo fmt --check`, `cargo clippy
   -D warnings`, `cargo check`, `cargo test`. Clippy and check run in
   parallel on macOS, Ubuntu, and Windows.
-- GitHub Actions `release.yml`: cross-platform bundle on tag push.
-  Checks out the ghostloop-ui sibling, builds the frontend, then runs
-  `tauri build` via `tauri-apps/tauri-action` on each OS and uploads
-  artefacts to a GitHub release.
+- GitHub Actions `release.yml`: cross-platform bundle scaffold (manual
+  trigger only for now). Wiring in place to check out the ghostloop-ui
+  sibling, build the frontend, and call `tauri-apps/tauri-action` on
+  each OS. Auto-trigger on tag push is disabled until two pre-existing
+  Tauri-with-Next.js bundling issues are fixed: (a) the
+  `beforeBuildCommand` backgrounds `npm run start` with `&` and never
+  exits, and (b) `frontendDist` points at `.next/static` rather than a
+  static-export `out/` directory, so the WebView would have no page
+  HTML to load. Both need an architectural pass that swaps the UI to
+  `output: 'export'` and routes the desktop app's API calls directly
+  to the sidecar Python runtime on `localhost:8000` instead of the
+  Next.js proxy. Tracked for v0.2.1.
 - Documentation expanded: gamepad support matrix (Xbox / PS5 /
   8BitDo / Stadia, wired and Bluetooth), drone control mapping, voice
   command table, native-input wiring example.

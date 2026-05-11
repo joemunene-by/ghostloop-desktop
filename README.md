@@ -158,7 +158,7 @@ The bundle artefacts land in `src-tauri/target/release/bundle/`.
 
 `ci.yml` runs on every PR and push to main: `cargo fmt --check`, `cargo clippy -D warnings`, `cargo check` and `cargo test`. The clippy and check steps run on macOS, Ubuntu, and Windows in parallel so platform-specific regressions surface immediately. Each job uses `Swatinem/rust-cache` so warm runs land in ~90 seconds.
 
-`release.yml` runs on tag push (e.g. `git tag v0.2.0 && git push --tags`). It checks out both this repo and `ghostloop-ui`, builds the Next.js frontend, then runs `tauri build` via `tauri-apps/tauri-action@v0` on each OS and uploads the artefacts to a GitHub release. No manual upload needed.
+`release.yml` is wired up for cross-platform bundling via `tauri-apps/tauri-action@v0` on macOS / Linux / Windows but is currently set to **workflow_dispatch only**. The auto-trigger on tag push is parked behind a v0.2.1 fix because the existing `tauri.conf.json` backgrounds `npm run start` from `beforeBuildCommand` (which never returns) and points `frontendDist` at `.next/static` instead of a Next.js static-export `out/` directory. Once the UI is reconfigured with `output: 'export'` and the desktop app routes its API calls directly to the sidecar's `localhost:8000`, the auto-trigger comes back. Until then, code lands on tags but DMG / MSI / AppImage artefacts have to be built locally with `npm run build`.
 
 ## Native input details
 
